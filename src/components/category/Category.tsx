@@ -4,12 +4,33 @@ import { useState } from "react";
 import { IoChevronForwardOutline } from "react-icons/io5";
 import Link from "next/link";
 
+const COLORS = [
+    "bg-red-400",
+    "bg-orange-400",
+    "bg-amber-400",
+    "bg-yellow-400",
+    "bg-lime-400",
+    "bg-green-400",
+    "bg-emerald-400",
+    "bg-teal-400",
+    "bg-cyan-400",
+    "bg-sky-400",
+    "bg-blue-400",
+    "bg-indigo-400",
+    "bg-violet-400",
+    "bg-fuchsia-400",
+    "bg-pink-400",
+    "bg-rose-400",
+];
+
+
+
 export default function Category({ id, name, icon, subcategories = [] }) {
     const [open, setOpen] = useState(false);
 
     return (
-        <Link href={`/categories/${id}`}>
-            <div className="flex flex-col cursor-pointer">
+        <Link href={`/categories/${name}`}>
+            <div className="flex flex-col cursor-pointer max-h-[70vh] overflow-y-auto">
                 <div className="flex justify-between items-center p-2 bg-amber-500 rounded-lg">
                     <div className="flex items-center gap-2">
                         {icon && (

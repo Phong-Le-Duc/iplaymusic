@@ -7,7 +7,7 @@ import { IoSettingsOutline } from "react-icons/io5";
 
 export default function FooterWithNav() {
     return (
-        <footer className="mt-40 py-4 px-4 shadow-top">
+        <footer className="mt-8 py-4 px-4 shadow-top bg-white">
             <nav className="flex justify-around items-center">
                 <Link href="/categories" className="flex items-center h-full"><IoMdMusicalNotes /></Link>
                 <Link href="/playlist" className="flex items-center h-full"><PiPlaylistLight /></Link>

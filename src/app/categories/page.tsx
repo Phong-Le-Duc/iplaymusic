@@ -27,7 +27,7 @@ export default function CategoriesPage() {
 
     return (
         <>
-            <h1 className="mb-6">Categories</h1>
+            {/* <h1 className="">Categories</h1> */}
             <div className="flex flex-col gap-4">
                 {categories.map((cat) => (
                     <Category
@@ -36,6 +36,7 @@ export default function CategoriesPage() {
                         name={cat.name}
                         icon={cat.icons[0]?.url}
                         subcategories={["Subcat 1", "Subcat 2"]} // <-- Add this for testing
+                    // index={idx}
                     />
                 ))}
             </div>

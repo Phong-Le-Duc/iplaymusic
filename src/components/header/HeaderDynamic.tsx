@@ -1,11 +1,9 @@
 "use client";
-// import Link from "next/link";
+import { useRouter, usePathname } from "next/navigation";
 import { IoChevronBackOutline } from "react-icons/io5";
 import { IoIosSearch } from "react-icons/io";
-import { usePathname } from "next/navigation";
 
 const TITLES: Record<string, string> = {
-
     "/": "Featured",
     "/categories": "Categories",
     "/playlist": "Playlist",
@@ -16,12 +14,26 @@ const TITLES: Record<string, string> = {
 };
 
 export default function HeaderDynamic() {
+    const router = useRouter();
     const pathname = usePathname();
-    const title = TITLES[pathname] || "iPlayMusic";
+
+    // Check if we're on a category detail page
+    let title = TITLES[pathname] || "iPlayMusic";
+    if (pathname.startsWith("/categories/") && pathname.split("/").length === 3) {
+        const id = pathname.split("/")[2];
+        title = `Category: ${decodeURIComponent(id)}`;
+    }
 
     return (
         <header className="flex justify-between items-center w-full px-4 py-4 mb-4">
-            <IoChevronBackOutline />
+            <button
+                type="button"
+                onClick={() => router.back()}
+                aria-label="Go back"
+                className="p-2 rounded hover:bg-gray-200 transition"
+            >
+                <IoChevronBackOutline />
+            </button>
             <span className="text-2xl">{title}</span>
             <IoIosSearch />
         </header>
