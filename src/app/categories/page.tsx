@@ -12,7 +12,7 @@ export default function CategoriesPage() {
         async function fetchCategories() {
             if (!accessToken) return;
             const res = await fetch(
-                "https://api.spotify.com/v1/browse/categories?country=DK&limit=20",
+                "https://api.spotify.com/v1/browse/categories?limit=50",
                 {
                     headers: {
                         Authorization: `Bearer ${accessToken}`,

@@ -19,13 +19,17 @@ export default function HeaderDynamic() {
 
     // Check if we're on a category detail page
     let title = TITLES[pathname] || "iPlayMusic";
-    if (pathname.startsWith("/categories/") && pathname.split("/").length === 3) {
+    const isCategoryDetail = pathname.startsWith("/categories/") && pathname.split("/").length === 3;
+    if (isCategoryDetail) {
         const id = pathname.split("/")[2];
         title = `Category: ${decodeURIComponent(id)}`;
     }
 
     return (
-        <header className="flex justify-between items-center w-full px-4 py-4 mb-4">
+        <header
+            className={`flex justify-between items-center w-full px-4 py-4 mb-4 ${isCategoryDetail ? "text-white" : ""
+                }`}
+        >
             <button
                 type="button"
                 onClick={() => router.back()}
