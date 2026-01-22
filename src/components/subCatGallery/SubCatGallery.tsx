@@ -37,12 +37,12 @@ export default function SubCatGallery({ className = "", subcategories = [] }) {
             setCenterIndex(closestIdx);
 
             // Circular logic: if at clones, reset scroll position
-            if (container.scrollLeft === 0) {
+            if (container.scrollLeft === 0 && container.children.length > 0) {
                 // At the very start (clonesStart), jump to real items
                 const itemWidth = container.children[0].clientWidth + 8; // 8px margin
                 container.scrollLeft = itemWidth * total;
             } else if (
-                container.scrollLeft + container.offsetWidth >= container.scrollWidth
+                container.scrollLeft + container.offsetWidth >= container.scrollWidth && container.children.length > 0
             ) {
                 // At the very end (clonesEnd), jump to real items
                 const itemWidth = container.children[0].clientWidth + 8;
@@ -55,8 +55,10 @@ export default function SubCatGallery({ className = "", subcategories = [] }) {
             container.addEventListener("scroll", handleScroll, { passive: true });
             // On mount, jump to first real item
             setTimeout(() => {
-                const itemWidth = container.children[0].clientWidth + 8;
-                container.scrollLeft = itemWidth * CLONE_COUNT;
+                if (container.children.length > 0) {
+                    const itemWidth = container.children[0].clientWidth + 8;
+                    container.scrollLeft = itemWidth * CLONE_COUNT;
+                }
             }, 0);
             handleScroll();
         }

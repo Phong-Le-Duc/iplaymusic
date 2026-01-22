@@ -23,13 +23,19 @@ const COLORS = [
     "bg-rose-400",
 ];
 
-
-
 export default function Category({ id, name, icon, subcategories = [] }) {
     const [open, setOpen] = useState(false);
 
+    const URLFriendlyName = name
+        .replace(/&/g, "%26")
+        .replace(/ /g, "%20")
+        .replace(/\//g, "%2F");
+
     return (
-        <Link href={`/categories/${name}`}>
+        <Link href={{
+            pathname: `/categories/${URLFriendlyName}`,
+            query: { subcategories: JSON.stringify(subcategories) }
+        }}>
             <div className="flex flex-col cursor-pointer max-h-[70vh] overflow-y-auto">
                 <div className="flex justify-between items-center p-2 bg-amber-500 rounded-lg">
                     <div className="flex items-center gap-2">
@@ -41,9 +47,9 @@ export default function Category({ id, name, icon, subcategories = [] }) {
                     {subcategories.length > 0 && (
                         <button
                             type="button"
-                            onClick={e => {
+                            onClick={(e) => {
                                 e.preventDefault(); // Prevents navigating when toggling subcategories
-                                setOpen(prev => !prev);
+                                setOpen((prev) => !prev);
                             }}
                         >
                             <IoChevronForwardOutline />
@@ -51,10 +57,12 @@ export default function Category({ id, name, icon, subcategories = [] }) {
                     )}
                 </div>
                 {open && subcategories.length > 0 && (
-                    <div className="bg-amber-100 rounded-b-lg px-4 py-2">
+                    <div className="bg-blue-200 rounded-b-lg px-4 py-2 max-h-25 overflow-y-auto">
                         <ul>
                             {subcategories.map((sub, idx) => (
-                                <li key={idx} className="py-1">{sub}</li>
+                                <li key={idx} className="py-1">
+                                    {sub}
+                                </li>
                             ))}
                         </ul>
                     </div>

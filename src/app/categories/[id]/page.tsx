@@ -1,25 +1,63 @@
 // "use client";
 import SubCatGallery from "@/components/subCatGallery/SubCatGallery";
+import { log } from "console";
 import { cookies } from "next/headers";
 import { IoPlayCircleSharp } from "react-icons/io5";
 
 
 export default async function CategoryDetailPage({ params }) {
     const cookieStore = await cookies();
-    const accessTokenCookie = cookieStore.get("IPM_AT");
+    const tokenCookie = cookieStore.get("IPM_AT");
 
     const { id } = await params;
-    const res = await fetch(`https://api.spotify.com/v1/search?q=${id}&type=artist`, {
+    const URLDecodedName = id.replace(/%26/g, "&").replace(/%20/g, " ").replace(/%2F/g, "/");
+
+    const res = await fetch(`https://api.spotify.com/v1/search?q=${URLDecodedName}&type=artist`, {
         headers: {
-            Authorization: `Bearer ${accessTokenCookie.value}`,
+            Authorization: `Bearer ${tokenCookie.value}`,
         }
     });
     const data = await res.json();
-    console.log(data);
+    console.log("API response for artists:", data);
+    data.artists.items.forEach(artist => {
+        console.log(artist.name, artist.genres);
+    });
+    console.log("THIS" + JSON.stringify(data.artists.items, null, 2));
 
-    // Spotify category endpoint deprecated, so filtering artists by genre as a workaround!!
+    // Normalization function for robust genre/category matching
+    function normalize(str: string) {
+        return str
+            .toLowerCase()
+            .replace(/&/g, "and")
+            .replace(/[\\/-]/g, " ")
+            .replace(/[^a-z0-9 ]/g, "") // remove special characters except spaces
+            .replace(/\s+/g, " ")
+            .trim();
+    }
+
+    // Synonyms for special categories
+    const categorySynonyms: Record<string, string[]> = {
+        "rnb": ["r&b", "rnb", "r and b", "r n b"],
+        "hip hop": ["hip hop", "hip-hop", "rap", "trap", "gangsta rap"],
+        "dance electronic": ["dance", "electronic", "edm", "dance electronic", "dance/electronic"],
+        "folk and acoustic": ["folk", "acoustic", "folk and acoustic", "folk & acoustic"],
+        // Add more as needed
+    };
+
+    const normalizedCategory = normalize(URLDecodedName);
+    // Find the synonym group that includes the normalized category
+    let synonyms = [normalizedCategory];
+    for (const arr of Object.values(categorySynonyms)) {
+        if (arr.map(normalize).includes(normalizedCategory)) {
+            synonyms = arr.map(normalize);
+            break;
+        }
+    }
+
     const filteredArtists = data.artists.items.filter(artist =>
-        artist.genres.some(genre => genre.toLowerCase().includes(id.toLowerCase()))
+        artist.genres.some(genre =>
+            synonyms.some(syn => normalize(genre).includes(syn))
+        )
     );
 
     // Step 1: Collect unique genres from filtered artists
@@ -51,13 +89,21 @@ export default async function CategoryDetailPage({ params }) {
             `https://api.spotify.com/v1/artists/${artist.id}/top-tracks?market=from_token`,
             {
                 headers: {
-                    Authorization: `Bearer ${accessTokenCookie.value}`,
+                    Authorization: `Bearer ${tokenCookie.value}`,
                 },
             }
         );
         const tracksData = await tracksRes.json();
         allTracks.push(...tracksData.tracks);
     }
+
+    const relevantGenres = ["r&b", "rnb", "folk", "acoustic"];
+    data.artists.items.forEach(artist => {
+        const matches = artist.genres.filter(genre =>
+            relevantGenres.some(g => genre.toLowerCase().includes(g))
+        );
+        console.log(artist.name, "matches:", matches);
+    });
 
     return (
 
