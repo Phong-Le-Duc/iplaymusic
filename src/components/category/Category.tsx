@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCategoryStateContext } from "./CategoryStateContext";
 import { IoChevronForwardOutline } from "react-icons/io5";
 import Link from "next/link";
 
@@ -24,12 +24,14 @@ const COLORS = [
 ];
 
 export default function Category({ id, name, icon, subcategories = [] }) {
-    const [open, setOpen] = useState(false);
+    const { openIndex, setOpenIndex } = useCategoryStateContext();
 
     const URLFriendlyName = name
         .replace(/&/g, "%26")
         .replace(/ /g, "%20")
         .replace(/\//g, "%2F");
+
+    const isOpen = openIndex === id;
 
     return (
         <Link href={{
@@ -37,27 +39,50 @@ export default function Category({ id, name, icon, subcategories = [] }) {
             query: { subcategories: JSON.stringify(subcategories) }
         }}>
             <div className="flex flex-col cursor-pointer max-h-[70vh] overflow-y-auto">
-                <div className="flex justify-between items-center p-2 bg-amber-500 rounded-lg">
-                    <div className="flex items-center gap-2">
-                        {icon && (
-                            <img src={icon} alt={name} className="w-8 h-8 rounded" />
-                        )}
-                        <h4>{name}</h4>
+                <div
+                    className="flex justify-between items-center p-2 rounded-lg z-10"
+                    style={{ backgroundColor: "rgba(150,150,150,0.8)" }}
+                >
+                    <div className="flex items-center gap-2 flex-1">
+                        <Link
+                            href={{
+                                pathname: `/categories/${URLFriendlyName}`,
+                                query: { subcategories: JSON.stringify(subcategories) }
+                            }}
+                            className="flex items-center gap-2"
+                        >
+                            {icon && (
+                                <img src={icon} alt={name} className="w-8 h-8 rounded" />
+                            )}
+                            <h4>{name}</h4>
+                        </Link>
                     </div>
                     {subcategories.length > 0 && (
                         <button
                             type="button"
                             onClick={(e) => {
-                                e.preventDefault(); // Prevents navigating when toggling subcategories
-                                setOpen((prev) => !prev);
+                                e.preventDefault();
+                                setOpenIndex(isOpen ? null : id);
+                            }}
+                            className={`p-2 rounded-full transition-colors 
+                                ${isOpen ? "bg-blue-400" : "bg-blue-300"} hover:bg-blue-400`}
+                            style={{
+                                boxShadow: isOpen
+                                    ? "inset 0 2px 8px rgba(0,0,0,0.45)"
+                                    : undefined,
                             }}
                         >
-                            <IoChevronForwardOutline />
+                            <IoChevronForwardOutline
+                                className={`transition-transform duration-200 ${isOpen ? "rotate-90" : ""}`}
+                            />
                         </button>
                     )}
                 </div>
-                {open && subcategories.length > 0 && (
-                    <div className="bg-blue-200 rounded-b-lg px-4 py-2 max-h-25 overflow-y-auto">
+                {isOpen && subcategories.length > 0 && (
+                    <div
+                        style={{ marginTop: "-5px", backgroundColor: "rgba(150,150,150,0.3)", maxHeight: "7.7rem" }}
+                        className="rounded-b-lg px-4 py-2 overflow-y-auto z-9"
+                    >
                         <ul>
                             {subcategories.map((sub, idx) => (
                                 <li key={idx} className="py-1">

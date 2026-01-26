@@ -111,9 +111,11 @@ export default async function CategoryDetailPage({ params }) {
             <figure className="fixed top-0 left-0 w-full z-[-1]">
                 <img className="w-full" src="/sound-wave.png" alt="sound-wave-background" />
             </figure>
-            <h4 className="text-white text-center mb-7">Sub categories</h4>
+            <h4 className="text-white text-center mb-4">
+                More Genres
+            </h4>
             <SubCatGallery
-                className=" left-0 w-full z-10"
+                className="left-0 w-full z-10"
                 subcategories={subcategories}
             />
 
@@ -143,6 +145,6 @@ export default async function CategoryDetailPage({ params }) {
                     </div>
                 ))}
             </div>
-        </div>
+        </div >
     );
 }

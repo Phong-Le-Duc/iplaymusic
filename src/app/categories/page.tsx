@@ -1,4 +1,5 @@
 import Category from "@/components/category/Category";
+import CategoryStateContextProvider from "@/components/category/CategoryStateContext";
 import { cookies } from "next/headers";
 
 
@@ -31,6 +32,7 @@ async function getSubcategories(categoryName, token) {
         }
     );
     const data = await res.json();
+    console.log("API response for artists:", data);
 
     function normalize(str) {
         return str
@@ -96,16 +98,25 @@ export default async function CategoriesPage() {
     return (
         <>
             {/* <h1 className="">Categories</h1> */}
-            <div className="flex flex-col gap-4 pb-30">
-                {categories.map((cat) => (
-                    <Category
-                        id={cat.id}
-                        key={cat.id} // key er til react
-                        name={cat.name}
-                        icon={cat.icons[0]?.url}
-                        subcategories={subcategoriesMap[cat.id]}
-                    />
-                ))}
+            <div
+                className="min-h-screen w-full bg-cover bg-center"
+                style={{
+                    backgroundImage: "url('/background_2.png')"
+                }}
+            >
+                <CategoryStateContextProvider>
+                    <div className="flex flex-col gap-4 pb-30">
+                        {categories.map((cat) => (
+                            <Category
+                                id={cat.id}
+                                key={cat.id}
+                                name={cat.name}
+                                icon={cat.icons[0]?.url}
+                                subcategories={subcategoriesMap[cat.id]}
+                            />
+                        ))}
+                    </div>
+                </CategoryStateContextProvider>
             </div>
         </>
     );

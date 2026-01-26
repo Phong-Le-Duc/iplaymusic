@@ -22,7 +22,7 @@ export default function HeaderDynamic() {
     const isCategoryDetail = pathname.startsWith("/categories/") && pathname.split("/").length === 3;
     if (isCategoryDetail) {
         const id = pathname.split("/")[2];
-        title = `Category: ${decodeURIComponent(id)}`;
+        title = `${decodeURIComponent(id)}`;
     }
 
     return (

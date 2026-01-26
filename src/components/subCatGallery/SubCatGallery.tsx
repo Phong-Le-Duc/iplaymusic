@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useEffect, useState } from "react";
+import Link from "next/link";
 
 export default function SubCatGallery({ className = "", subcategories = [] }) {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -72,30 +73,36 @@ export default function SubCatGallery({ className = "", subcategories = [] }) {
     return (
         <div
             ref={containerRef}
-            className={`w-full h-36 overflow-x-auto flex flex-row snap-x snap-mandatory ${className}`}
+            className={`overflow-x-auto flex flex-row snap-x snap-mandatory ${className}`}
+            style={{ height: "140px" }}
         >
             {displaySubcats.map((subcat, i) => (
-                <div
+                <Link
                     key={subcat.name + '-' + i}
-                    className="bg-black snap-center rounded flex-shrink-0 transition-transform transition-opacity duration-300 flex flex-col items-center justify-center"
-                    style={{
-                        width: "7rem",
-                        height: "7rem",
-                        transform: i === centerIndex ? "scale(1.2)" : "scale(0.8)",
-                        opacity: i === centerIndex ? 1 : 0.5,
-                        margin: "0 0.25rem",
-                        backgroundImage: `url(${subcat.image})`,
-                        backgroundSize: "cover",
-                        backgroundPosition: "center",
-                    }}
+                    href={`/categories/${encodeURIComponent(subcat.name)}`}
+                    className="block"
                 >
-                    <span
-                        className="text-white text-xs px-2 py-1 rounded mt-2 w-full flex justify-center items-center"
-                        style={{ background: "rgba(0,0,0,0.5)" }}
+                    <div
+                        className="bg-black snap-center rounded flex-shrink-0 transition-transform transition-opacity duration-300 flex flex-col items-center justify-center"
+                        style={{
+                            width: "7rem",
+                            height: "7rem",
+                            transform: i === centerIndex ? "scale(1.2)" : "scale(0.8)",
+                            opacity: i === centerIndex ? 1 : 0.5,
+                            margin: "0 0.25rem",
+                            backgroundImage: `url(${subcat.image})`,
+                            backgroundSize: "cover",
+                            backgroundPosition: "center",
+                        }}
                     >
-                        {subcat.name}
-                    </span>
-                </div>
+                        <span
+                            className="text-white text-xs px-2 py-1 mt-2 w-full flex justify-center items-center"
+                            style={{ background: "rgba(0,0,0,0.5)" }}
+                        >
+                            {subcat.name}
+                        </span>
+                    </div>
+                </Link>
             ))}
         </div>
     );
