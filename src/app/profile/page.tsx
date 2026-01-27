@@ -1,6 +1,15 @@
-export default function page() {
+import { ThemeModeProvider } from "@/components/buttons/ThemeModeContext";
+import DarkLightToggle from "@/components/buttons/DarkLightToggle";
+import ThemeToggle from "@/components/buttons/ThemeToggle";
 
+export default function Page() {
     return (
-        <h1>Profile page placeholder</h1>
-    )
+        <ThemeModeProvider>
+            <section>
+                <h2>Themes</h2>
+                <DarkLightToggle />
+                <ThemeToggle />
+            </section>
+        </ThemeModeProvider>
+    );
 }

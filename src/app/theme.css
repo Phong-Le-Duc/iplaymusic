@@ -1,0 +1,89 @@
+:root {
+    --background: #ffffff;
+    --foreground: #171717;
+    --footer-bg: #fff;
+    --footer-icon: #171717;
+}
+
+html[data-theme="dark"] {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+    --footer-bg: #171717;
+    --footer-icon: #ededed;
+}
+
+html[data-theme="light"] {
+    --background: #ffffff;
+    --foreground: #171717;
+    --footer-bg: #fff;
+    --footer-icon: #171717;
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        --background: #ffffff;
+        --foreground: #171717;
+        --footer-bg: #fff;
+        --footer-icon: #171717;
+    }
+}
+
+
+[data-theme="dark"] {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+    --footer-bg: #171717;
+    --footer-icon: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background: #0a0a0a;
+        --foreground: #ededed;
+        --footer-bg: #171717;
+        --footer-icon: #ededed;
+    }
+}
+
+/* Custom_1: Green color scheme */
+html[data-theme="custom_1"] {
+    --background: #e6f9ec;
+    /* light green background */
+    --foreground: #134e1e;
+    /* dark green text */
+    --footer-bg: #b6e5c9;
+    /* medium green for footer */
+    --footer-icon: #217a3a;
+    /* strong green for icons */
+}
+
+/* Custom_2: Blue color scheme */
+html[data-theme="custom_2"] {
+    --background: #e6f0fa;
+    /* light blue background */
+    --foreground: #15305b;
+    /* dark blue text */
+    --footer-bg: #b3d0ee;
+    /* medium blue for footer */
+    --footer-icon: #2563eb;
+    /* strong blue for icons */
+}
+
+/* Custom_3: Red color scheme */
+html[data-theme="custom_3"] {
+    --background: #faeaea;
+    /* light red background */
+    --foreground: #5b1515;
+    /* dark red text */
+    --footer-bg: #eeb3b3;
+    /* medium red for footer */
+    --footer-icon: #eb2525;
+    /* strong red for icons */
+}
+
+/* @theme inline {
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --font-sans: var(--font-geist-sans);
+    --font-mono: var(--font-geist-mono);
+} */

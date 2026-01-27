@@ -100,9 +100,9 @@ export default async function CategoriesPage() {
             {/* <h1 className="">Categories</h1> */}
             <div
                 className="min-h-screen w-full bg-cover bg-center"
-                style={{
-                    backgroundImage: "url('/background_2.png')"
-                }}
+            // style={{
+            //     backgroundImage: "url('/background_2.png')"
+            // }}
             >
                 <CategoryStateContextProvider>
                     <div className="flex flex-col gap-4 pb-30">

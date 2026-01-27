@@ -20,7 +20,6 @@ export async function GET(request: NextRequest) {
     });
 
     const data = await response.json();
-
     const cookieStore = await cookies();
 
     // IPM_AT = iplaymusic access token

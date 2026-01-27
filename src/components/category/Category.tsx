@@ -41,7 +41,7 @@ export default function Category({ id, name, icon, subcategories = [] }) {
             <div className="flex flex-col cursor-pointer max-h-[70vh] overflow-y-auto">
                 <div
                     className="flex justify-between items-center p-2 rounded-lg z-10"
-                    style={{ backgroundColor: "rgba(150,150,150,0.8)" }}
+                    style={{ backgroundColor: "rgba(150,150,150,0.3)" }}
                 >
                     <div className="flex items-center gap-2 flex-1">
                         <Link
@@ -80,7 +80,7 @@ export default function Category({ id, name, icon, subcategories = [] }) {
                 </div>
                 {isOpen && subcategories.length > 0 && (
                     <div
-                        style={{ marginTop: "-5px", backgroundColor: "rgba(150,150,150,0.3)", maxHeight: "7.7rem" }}
+                        style={{ marginTop: "-5px", backgroundColor: "rgba(150,150,150,0.1)", maxHeight: "7.7rem" }}
                         className="rounded-b-lg px-4 py-2 overflow-y-auto z-9"
                     >
                         <ul>
