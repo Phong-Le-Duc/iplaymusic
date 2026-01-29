@@ -27,8 +27,7 @@ export default function HeaderDynamic() {
 
     return (
         <header
-            className={`flex justify-between items-center w-full px-4 py-4 mb-4 ${isCategoryDetail ? "text-white" : ""
-                }`}
+            className={`sticky top-0 left-0 z-[200] flex justify-between items-center w-full px-4 py-4 mb-4  ${isCategoryDetail ? "text-white" : ""}`}
         >
             <button
                 type="button"

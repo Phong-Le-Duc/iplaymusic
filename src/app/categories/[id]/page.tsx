@@ -108,23 +108,22 @@ export default async function CategoryDetailPage({ params }) {
     });
 
     return (
-
-        <div className="relative">
-            <figure className="fixed top-0 left-0 w-full z-[-1]">
+        <div className="relative h-full bg-transparent flex flex-col w-screen max-w-none left-1/2 right-1/2 -translate-x-1/2">
+            <figure className="fixed -top-20 left-0 w-full z-[-100]">
                 <img className="w-full" src="/sound-wave.png" alt="sound-wave-background" />
             </figure>
-            <h4 className="text-white text-center mb-4">
-                More Genres
-            </h4>
+            <header className="sticky top-0 left-0 w-full z-[100]" style={{ background: 'transparent' }}>
+                <h4 className="text-white text-center mb-4 pt-4">
+                    More Genres
+                </h4>
+            </header>
             <SubCatGallery
                 className="left-0 w-full z-10"
                 subcategories={subcategories}
             />
-
-            <div className=" relative top-40 max-h-[70vh] overflow-y-auto">
+            <div className="mt-8 overflow-y-auto" style={{ height: 'calc(100vh - 350px)' }}>
                 <CurrentPlayingTrack tracks={allTracks} />
             </div>
-        </div >
-
+        </div>
     );
 }

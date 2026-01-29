@@ -15,7 +15,7 @@ export default function HeaderDynamic() {
     const title = TITLES[pathname] || "iPlayMusic";
 
     return (
-        <header className="flex justify-between items-center w-full p-4 bg-red-500">
+        <header className="flex justify-between items-center w-full p-4" style={{ background: 'transparent' }}>
             <IoChevronBackOutline />
             <span className="text-3xl">{title}</span>
             <IoIosSearch />

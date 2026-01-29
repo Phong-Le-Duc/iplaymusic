@@ -15,10 +15,12 @@ export default function SubCatGallery({ className = "", subcategories = [] }) {
     const clonesEnd = subcategories.slice(0, CLONE_COUNT);
     const displaySubcats = [...clonesStart, ...subcategories, ...clonesEnd];
 
+
     useEffect(() => {
+        const container = containerRef.current;
+        if (!container) return;
+
         const handleScroll = () => {
-            if (!containerRef.current) return;
-            const container = containerRef.current;
             const containerRect = container.getBoundingClientRect();
             const containerCenter = containerRect.left + containerRect.width / 2;
 
@@ -51,22 +53,18 @@ export default function SubCatGallery({ className = "", subcategories = [] }) {
             }
         };
 
-        const container = containerRef.current;
-        if (container) {
-            container.addEventListener("scroll", handleScroll, { passive: true });
-            // On mount, jump to first real item
-            setTimeout(() => {
-                if (container.children.length > 0) {
-                    const itemWidth = container.children[0].clientWidth + 8;
-                    container.scrollLeft = itemWidth * CLONE_COUNT;
-                }
-            }, 0);
-            handleScroll();
-        }
-        return () => {
-            if (container) {
-                container.removeEventListener("scroll", handleScroll);
+        container.addEventListener("scroll", handleScroll, { passive: true });
+        // On mount, jump to first real item
+        setTimeout(() => {
+            if (container.children.length > 0) {
+                const itemWidth = container.children[0].clientWidth + 8;
+                container.scrollLeft = itemWidth * CLONE_COUNT;
             }
+        }, 0);
+        handleScroll();
+
+        return () => {
+            container.removeEventListener("scroll", handleScroll);
         };
     }, [total]);
 
@@ -74,16 +72,16 @@ export default function SubCatGallery({ className = "", subcategories = [] }) {
         <div
             ref={containerRef}
             className={`overflow-x-auto flex flex-row snap-x snap-mandatory ${className}`}
-            style={{ height: "140px" }}
+            style={{ height: "120px", background: "transparent" }}
         >
-            {displaySubcats.map((subcat, i) => (
+            {displaySubcats.map((subcat: any, i: number) => (
                 <Link
                     key={subcat.name + '-' + i}
                     href={`/categories/${encodeURIComponent(subcat.name)}`}
                     className="block"
                 >
                     <div
-                        className="bg-black snap-center rounded flex-shrink-0 transition-transform transition-opacity duration-300 flex flex-col items-center justify-center"
+                        className="snap-center rounded shrink-0 transition-transform transition-opacity duration-300 flex flex-col items-center justify-center"
                         style={{
                             width: "7rem",
                             height: "7rem",
