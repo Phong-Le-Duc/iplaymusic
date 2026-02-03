@@ -12,13 +12,16 @@ type PendingRemoval = {
     [trackId: string]: number; // countdown in seconds
 };
 
+type FavoriteTrackProps = {
+    playingId: string | null;
+    handlePlayPause: (trackId: string) => void;
+};
 
-export default function FavoriteTrack() {
+export default function FavoriteTrack({ playingId, handlePlayPause }: FavoriteTrackProps) {
     const [favorites, setFavorites] = useState<TrackType[]>([]);
     const [pendingRemoval, setPendingRemoval] = useState<PendingRemoval>({});
 
     const timers = useRef<{ [trackId: string]: NodeJS.Timeout }>({});
-
 
 
     useEffect(() => {
@@ -98,31 +101,30 @@ export default function FavoriteTrack() {
     return (
         <div>
             {favorites.map((track) => (
-                <div key={track.id}>
-                    <Track
-                        track={track}
-                        isPlaying={false}
-                        onPlayPause={() => { }}
+                <Track
+                    key={track.id}
+                    track={track}
+                    isPlaying={playingId === track.id}
+                    onPlayPause={() => handlePlayPause(track.id)}
+                >
+                    <button
+                        type="button"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            handleStarClick(track);
+                        }}
+                        aria-label={isFavorite(track) ? "Remove from favorites" : "Add to favorites"}
                     >
-                        <button
-                            type="button"
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                handleStarClick(track);
-                            }}
-                            aria-label={isFavorite(track) ? "Remove from favorites" : "Add to favorites"}
-                        >
-                            {isFavorite(track) && !pendingRemoval[track.id] ? (
-                                <FaStar className="text-yellow-400" />
-                            ) : (
-                                <FaRegStar />
-                            )}
-                        </button>
-                        {pendingRemoval[track.id] && (
-                            <div className="text-xs text-red-500 mt-1">Removing ({pendingRemoval[track.id]})</div>
+                        {isFavorite(track) && !pendingRemoval[track.id] ? (
+                            <FaStar className="text-yellow-400" />
+                        ) : (
+                            <FaRegStar />
                         )}
-                    </Track>
-                </div>
+                    </button>
+                    {pendingRemoval[track.id] && (
+                        <div className="text-xs text-red-500 mt-1">Removing ({pendingRemoval[track.id]})</div>
+                    )}
+                </Track>
             ))}
         </div>
     );

@@ -2,9 +2,10 @@
 import SubCatGallery from "@/components/subCatGallery/SubCatGallery";
 import Track from "@/components/track/Track";
 import CurrentPlayingTrack from "@/components/track/currentPlayingTrack";
-import { log } from "console";
+import TrackPlayerClient from "@/components/track/TrackPlayerClient";
+
 import { cookies } from "next/headers";
-import { IoPlayCircleSharp } from "react-icons/io5";
+
 
 
 export default async function CategoryDetailPage({ params }) {
@@ -122,7 +123,10 @@ export default async function CategoryDetailPage({ params }) {
                 subcategories={subcategories}
             />
             <div className="mt-8 overflow-y-auto" style={{ height: 'calc(100vh - 350px)' }}>
-                <CurrentPlayingTrack tracks={allTracks} />
+                {/* Remove this line: */}
+                {/* <CurrentPlayingTrack tracks={allTracks} /> */}
+                {/* Only use the client component for playback: */}
+                <TrackPlayerClient tracks={allTracks} />
             </div>
         </div>
     );

@@ -1,18 +1,19 @@
 "use client";
 
-import { useRef, useEffect, ReactNode } from "react";
+import { useRef, useEffect, ReactNode, } from "react";
 import { IoPlayCircleSharp, IoPauseCircleSharp } from "react-icons/io5";
-
 
 type TrackProps = {
     track: any;
     isPlaying: boolean;
-    onPlayPause?: () => void;
+    onPlayPause: () => void;
     children?: ReactNode;
 };
 
-export default function Track({ track, isPlaying, onPlayPause = () => { }, children }: TrackProps) {
-    const playerRef = useRef();
+export default function Track({ track, isPlaying, onPlayPause, children }: TrackProps) {
+    const playerRef = useRef(null);
+
+
 
     useEffect(() => {
         const audio = playerRef.current;
@@ -24,13 +25,6 @@ export default function Track({ track, isPlaying, onPlayPause = () => { }, child
             audio.currentTime = 0;
         }
     }, [isPlaying]);
-
-    // Fallbacks for missing data
-    const name = track?.name || "Unknown Title";
-    const artists = Array.isArray(track?.artists) && track.artists.length > 0
-        ? track.artists
-        : [{ id: "unknown", name: "Unknown Artist" }];
-    const duration = typeof track?.duration_ms === "number" ? track.duration_ms : 0;
 
     return (
         <div className="flex justify-between items-center mb-4 p-2 ">
@@ -50,12 +44,12 @@ export default function Track({ track, isPlaying, onPlayPause = () => { }, child
                     {/* Audio Preview Clips may not be offered as a standalone service or product. */}
                 </div>
                 <div>
-                    <p className="text-md font-semibold">{name}</p>
+                    <p className="text-md font-semibold">{track.name}</p>
                     <p>
-                        {artists.map((artist, idx) => (
-                            <span key={artist.id || idx} className="text-gray-500 text-sm">
+                        {track.artists.map((artist, idx) => (
+                            <span key={artist.id} className="text-gray-500 text-sm">
                                 {artist.name}
-                                {idx < artists.length - 1 ? ", " : ""}
+                                {idx < track.artists.length - 1 ? ", " : ""}
                             </span>
                         ))}
                     </p>
@@ -63,8 +57,8 @@ export default function Track({ track, isPlaying, onPlayPause = () => { }, child
             </div>
             <div className="flex items-center gap-2">
                 <p>
-                    {Math.floor(duration / 60000)}:
-                    {Math.floor((duration % 60000) / 1000)
+                    {Math.floor(track.duration_ms / 60000)}:
+                    {Math.floor((track.duration_ms % 60000) / 1000)
                         .toString()
                         .padStart(2, "0")}
                 </p>

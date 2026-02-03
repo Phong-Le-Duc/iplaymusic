@@ -48,7 +48,14 @@ const CurrentPlayingTrack: React.FC<Props> = ({ tracks, playingId, handlePlayPau
     // Add or remove a track from favorites
     const toggleFavorite = (track: TrackType) => {
         setFavorites((prev) => {
-            const updated = prev.some((fav) => fav.id === track.id) ? prev : [...prev, track];
+            let updated;
+            if (prev.some((fav) => fav.id === track.id)) {
+                // If already favorite, remove it
+                updated = prev.filter((fav) => fav.id !== track.id);
+            } else {
+                // If not favorite, add it
+                updated = [...prev, track];
+            }
             console.log("[CurrentPlayingTrack] setFavorites (toggleFavorite):", updated);
             localStorage.setItem(FAVORITES_KEY, JSON.stringify(updated));
             return updated;
