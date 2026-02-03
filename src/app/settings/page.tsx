@@ -6,7 +6,7 @@ import DarkLightToggle from "@/components/buttons/DarkLightToggle";
 export default function Page() {
     return (
         <ThemeModeProvider>
-            <h1>settings page placeholder</h1>
+            <h1>Themes</h1>
             <DarkLightToggle />
             <ThemeToggle />
         </ThemeModeProvider>

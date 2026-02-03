@@ -1,9 +1,17 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, ReactNode } from "react";
 import { IoPlayCircleSharp, IoPauseCircleSharp } from "react-icons/io5";
 
-export default function Track({ track, isPlaying, onPlayPause }) {
+
+type TrackProps = {
+    track: any;
+    isPlaying: boolean;
+    onPlayPause?: () => void;
+    children?: ReactNode;
+};
+
+export default function Track({ track, isPlaying, onPlayPause = () => { }, children }: TrackProps) {
     const playerRef = useRef();
 
     useEffect(() => {
@@ -16,6 +24,13 @@ export default function Track({ track, isPlaying, onPlayPause }) {
             audio.currentTime = 0;
         }
     }, [isPlaying]);
+
+    // Fallbacks for missing data
+    const name = track?.name || "Unknown Title";
+    const artists = Array.isArray(track?.artists) && track.artists.length > 0
+        ? track.artists
+        : [{ id: "unknown", name: "Unknown Artist" }];
+    const duration = typeof track?.duration_ms === "number" ? track.duration_ms : 0;
 
     return (
         <div className="flex justify-between items-center mb-4 p-2 ">
@@ -35,23 +50,26 @@ export default function Track({ track, isPlaying, onPlayPause }) {
                     {/* Audio Preview Clips may not be offered as a standalone service or product. */}
                 </div>
                 <div>
-                    <p className="text-md font-semibold">{track.name}</p>
+                    <p className="text-md font-semibold">{name}</p>
                     <p>
-                        {track.artists.map((artist, idx) => (
-                            <span key={artist.id} className="text-gray-500 text-sm">
+                        {artists.map((artist, idx) => (
+                            <span key={artist.id || idx} className="text-gray-500 text-sm">
                                 {artist.name}
-                                {idx < track.artists.length - 1 ? ", " : ""}
+                                {idx < artists.length - 1 ? ", " : ""}
                             </span>
                         ))}
                     </p>
                 </div>
             </div>
-            <p>
-                {Math.floor(track.duration_ms / 60000)}:
-                {Math.floor((track.duration_ms % 60000) / 1000)
-                    .toString()
-                    .padStart(2, "0")}
-            </p>
+            <div className="flex items-center gap-2">
+                <p>
+                    {Math.floor(duration / 60000)}:
+                    {Math.floor((duration % 60000) / 1000)
+                        .toString()
+                        .padStart(2, "0")}
+                </p>
+                {children}
+            </div>
         </div>
     );
 }

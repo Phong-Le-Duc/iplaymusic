@@ -45,18 +45,10 @@ export default function Category({ id, name, icon, subcategories = [] }) {
                         style={{ backgroundColor: "rgba(150,150,150,0.3)" }}
                     >
                         <div className="flex items-center gap-2 flex-1">
-                            <Link
-                                href={{
-                                    pathname: `/categories/${URLFriendlyName}`,
-                                    query: { subcategories: JSON.stringify(subcategories) }
-                                }}
-                                className="flex items-center gap-2"
-                            >
-                                {icon && (
-                                    <img src={icon} alt={name} className="w-8 h-8 rounded" />
-                                )}
-                                <h4>{name}</h4>
-                            </Link>
+                            {icon && (
+                                <img src={icon} alt={name} className="w-8 h-8 rounded" />
+                            )}
+                            <h4>{name}</h4>
                         </div>
                         {subcategories.length > 0 && (
                             <button
@@ -87,7 +79,14 @@ export default function Category({ id, name, icon, subcategories = [] }) {
                             <ul>
                                 {subcategories.map((sub, idx) => (
                                     <li key={idx} className="py-1">
-                                        {sub}
+                                        <Link
+                                            href={{
+                                                pathname: `/categories/${encodeURIComponent(sub)}`,
+                                            }}
+                                            className="hover:underline text-blue-700"
+                                        >
+                                            {sub}
+                                        </Link>
                                     </li>
                                 ))}
                             </ul>

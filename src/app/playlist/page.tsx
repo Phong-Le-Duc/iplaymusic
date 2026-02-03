@@ -1,13 +1,10 @@
-import Playlist from "@/components/playlist/Playlist"
+import FavoriteTrack from "@/components/track/favoriteTrack";
 
 export default function PlaylistPage() {
-
     return (
-        <>
-            {/* <h1 className="mb-6">Playlist page</h1> */}
-
-
-            <Playlist />
-        </>
-    )
+        <div>
+            <h1 className="text-2xl font-bold mb-4">My Favorite Songs</h1>
+            <FavoriteTrack />
+        </div>
+    );
 }

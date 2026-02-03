@@ -31,7 +31,7 @@ export default function DarkLightToggle() {
 
     return (
         <label
-            className={`flex items-center cursor-pointer ${isCustom ? "opacity-30 cursor-not-allowed" : ""}`}
+            className={`flex items-center cursor-pointer my-4 ${isCustom ? "opacity-30 cursor-not-allowed" : ""}`}
             title={isCustom ? "Disabled while custom theme is active" : ""}
         >
             <span className="mr-2">Light/Dark</span>
