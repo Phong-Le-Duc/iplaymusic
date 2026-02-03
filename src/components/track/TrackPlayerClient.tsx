@@ -2,7 +2,9 @@
 import { useState } from "react";
 import CurrentPlayingTrack from "./currentPlayingTrack";
 
-export default function TrackPlayerClient({ tracks }) {
+import type { TrackType } from "@/type";
+
+export default function TrackPlayerClient({ tracks }: { tracks: TrackType[] }) {
     const [playingId, setPlayingId] = useState<string | null>(null);
 
     const handlePlayPause = (trackId: string) => {

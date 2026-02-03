@@ -13,7 +13,7 @@ type TrackType = {
 
 type Props = {
     tracks: TrackType[];
-    playingId: string;
+    playingId: string | null;
     handlePlayPause: (trackId: string) => void;
 };
 

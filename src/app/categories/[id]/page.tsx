@@ -5,16 +5,18 @@ import CurrentPlayingTrack from "@/components/track/currentPlayingTrack";
 import TrackPlayerClient from "@/components/track/TrackPlayerClient";
 
 import { cookies } from "next/headers";
+import type { SubcategoryType } from "@/type";
 
-
-
-export default async function CategoryDetailPage({ params }) {
+export default async function CategoryDetailPage({ params }: { params: { id: string } }) {
     const cookieStore = await cookies();
     const tokenCookie = cookieStore.get("IPM_AT");
 
     const { id } = await params;
     const URLDecodedName = id.replace(/%26/g, "&").replace(/%20/g, " ").replace(/%2F/g, "/");
 
+    if (!tokenCookie || !tokenCookie.value) {
+        throw new Error("Authentication token not found. Please log in.");
+    }
     const res = await fetch(`https://api.spotify.com/v1/search?q=${URLDecodedName}&type=artist`, {
         headers: {
             Authorization: `Bearer ${tokenCookie.value}`,
@@ -22,7 +24,7 @@ export default async function CategoryDetailPage({ params }) {
     });
     const data = await res.json();
     console.log("API response for artists:", data);
-    data.artists.items.forEach(artist => {
+    data.artists.items.forEach((artist: any) => {
         console.log(artist.name, artist.genres);
     });
     console.log("THIS" + JSON.stringify(data.artists.items, null, 2));
@@ -57,25 +59,25 @@ export default async function CategoryDetailPage({ params }) {
         }
     }
 
-    const filteredArtists = data.artists.items.filter(artist =>
-        artist.genres.some(genre =>
-            synonyms.some(syn => normalize(genre).includes(syn))
+    const filteredArtists = data.artists.items.filter((artist: any) =>
+        artist.genres.some((genre: string) =>
+            synonyms.some((syn: string) => normalize(genre).includes(syn))
         )
     );
 
     // Step 1: Collect unique genres from filtered artists
     const genreSet = new Set();
-    filteredArtists.forEach(artist => {
-        artist.genres.forEach(genre => genreSet.add(genre));
+    filteredArtists.forEach((artist: any) => {
+        artist.genres.forEach((genre: string) => genreSet.add(genre));
     });
-    const uniqueGenres = Array.from(genreSet);
+    const uniqueGenres = Array.from(genreSet) as string[];
     console.log("Unique genres for this category:", uniqueGenres);
 
 
     // Step 2: Prepare subcategory data with images
-    const subcategories = uniqueGenres.map((genre) => {
+    const subcategories: SubcategoryType[] = uniqueGenres.map((genre) => {
         // Find the first artist with this genre and use their image
-        const artistWithGenre = filteredArtists.find(artist =>
+        const artistWithGenre = filteredArtists.find((artist: any) =>
             artist.genres.includes(genre) && artist.images && artist.images.length > 0
         );
         return {
@@ -88,6 +90,7 @@ export default async function CategoryDetailPage({ params }) {
     // Fetch top tracks for each filtered artist
     let allTracks = [];
     for (const artist of filteredArtists) {
+        if (!tokenCookie) continue;
         const tracksRes = await fetch(
             `https://api.spotify.com/v1/artists/${artist.id}/top-tracks?market=from_token`,
             {
@@ -101,9 +104,9 @@ export default async function CategoryDetailPage({ params }) {
     }
 
     const relevantGenres = ["r&b", "rnb", "folk", "acoustic"];
-    data.artists.items.forEach(artist => {
-        const matches = artist.genres.filter(genre =>
-            relevantGenres.some(g => genre.toLowerCase().includes(g))
+    data.artists.items.forEach((artist: any) => {
+        const matches = artist.genres.filter((genre: string) =>
+            relevantGenres.some((g: string) => genre.toLowerCase().includes(g))
         );
         console.log(artist.name, "matches:", matches);
     });
@@ -113,7 +116,7 @@ export default async function CategoryDetailPage({ params }) {
             <figure className="fixed -top-20 left-0 w-full z-[-100]">
                 <img className="w-full" src="/sound-wave.png" alt="sound-wave-background" />
             </figure>
-            <header className="sticky top-0 left-0 w-full z-[100]" style={{ background: 'transparent' }}>
+            <header className="sticky top-0 left-0 w-full z-100" style={{ background: 'transparent' }}>
                 <h4 className="text-white text-center mb-4 pt-4">
                     More Genres
                 </h4>

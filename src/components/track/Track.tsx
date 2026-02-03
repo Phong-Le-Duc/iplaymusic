@@ -3,15 +3,10 @@
 import { useRef, useEffect, ReactNode, } from "react";
 import { IoPlayCircleSharp, IoPauseCircleSharp } from "react-icons/io5";
 
-type TrackProps = {
-    track: any;
-    isPlaying: boolean;
-    onPlayPause: () => void;
-    children?: ReactNode;
-};
+import type { TrackProps, TrackType, ArtistType } from "@/type";
 
 export default function Track({ track, isPlaying, onPlayPause, children }: TrackProps) {
-    const playerRef = useRef(null);
+    const playerRef = useRef<HTMLAudioElement>(null);
 
 
 
@@ -46,8 +41,8 @@ export default function Track({ track, isPlaying, onPlayPause, children }: Track
                 <div>
                     <p className="text-md font-semibold">{track.name}</p>
                     <p>
-                        {track.artists.map((artist, idx) => (
-                            <span key={artist.id} className="text-gray-500 text-sm">
+                        {track.artists.map((artist: ArtistType, idx: number) => (
+                            <span key={artist.id || idx} className="text-gray-500 text-sm">
                                 {artist.name}
                                 {idx < track.artists.length - 1 ? ", " : ""}
                             </span>
@@ -57,8 +52,8 @@ export default function Track({ track, isPlaying, onPlayPause, children }: Track
             </div>
             <div className="flex items-center gap-2">
                 <p>
-                    {Math.floor(track.duration_ms / 60000)}:
-                    {Math.floor((track.duration_ms % 60000) / 1000)
+                    {Math.floor((track.duration_ms ?? 0) / 60000)}:
+                    {Math.floor(((track.duration_ms ?? 0) % 60000) / 1000)
                         .toString()
                         .padStart(2, "0")}
                 </p>

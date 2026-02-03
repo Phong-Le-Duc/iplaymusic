@@ -3,19 +3,7 @@ import { useEffect, useState, useRef } from "react";
 import Track from "./Track";
 import { FaRegStar, FaStar } from "react-icons/fa";
 
-type TrackType = {
-    id: string;
-    // add other properties as needed
-};
-
-type PendingRemoval = {
-    [trackId: string]: number; // countdown in seconds
-};
-
-type FavoriteTrackProps = {
-    playingId: string | null;
-    handlePlayPause: (trackId: string) => void;
-};
+import type { TrackType, PendingRemoval, FavoriteTrackProps } from "@/type";
 
 export default function FavoriteTrack({ playingId, handlePlayPause }: FavoriteTrackProps) {
     const [favorites, setFavorites] = useState<TrackType[]>([]);
@@ -39,13 +27,13 @@ export default function FavoriteTrack({ playingId, handlePlayPause }: FavoriteTr
 
 
     const isFavorite = (track: TrackType) =>
-        favorites.some((fav) => fav.id === track.id);
+        favorites.some((fav: TrackType) => fav.id === track.id);
 
     // Start a 5s countdown before removing
     const startRemovalCountdown = (track: TrackType) => {
-        setPendingRemoval((prev) => ({ ...prev, [track.id]: 5 }));
+        setPendingRemoval((prev: PendingRemoval) => ({ ...prev, [track.id]: 5 }));
         timers.current[track.id] = setInterval(() => {
-            setPendingRemoval((prev) => {
+            setPendingRemoval((prev: PendingRemoval) => {
                 const next = { ...prev };
                 if (next[track.id] > 1) {
                     next[track.id] = next[track.id] - 1;
@@ -53,8 +41,8 @@ export default function FavoriteTrack({ playingId, handlePlayPause }: FavoriteTr
                     clearInterval(timers.current[track.id]);
                     delete timers.current[track.id];
                     delete next[track.id];
-                    setFavorites((favs) => {
-                        const updated = favs.filter((fav) => fav.id !== track.id);
+                    setFavorites((favs: TrackType[]) => {
+                        const updated = favs.filter((fav: TrackType) => fav.id !== track.id);
                         console.log("[FavoriteTrack] setFavorites (removal countdown):", updated);
                         localStorage.setItem("favoriteTracks", JSON.stringify(updated)); // <-- update localStorage here
                         return updated;
@@ -71,7 +59,7 @@ export default function FavoriteTrack({ playingId, handlePlayPause }: FavoriteTr
             clearInterval(timers.current[track.id]);
             delete timers.current[track.id];
         }
-        setPendingRemoval((prev) => {
+        setPendingRemoval((prev: PendingRemoval) => {
             const next = { ...prev };
             delete next[track.id];
             return next;

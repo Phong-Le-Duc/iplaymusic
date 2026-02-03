@@ -1,11 +1,7 @@
 "use client";
 import { createContext, useContext, useEffect, useState } from "react";
 
-type ThemeMode = "light" | "dark" | "custom_1" | "custom_2" | "custom_3";
-type ThemeModeContextType = {
-    mode: ThemeMode;
-    setMode: (mode: ThemeMode) => void;
-};
+import type { ThemeMode, ThemeModeContextType } from "@/type";
 
 const ThemeModeContext = createContext<ThemeModeContextType | undefined>(undefined);
 

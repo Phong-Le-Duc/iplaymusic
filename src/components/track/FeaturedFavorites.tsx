@@ -1,14 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 
-type TrackType = {
-    id: string;
-    name: string;
-    artists: { name: string }[];
-    album?: {
-        images?: { url: string }[];
-    };
-};
+import type { TrackType } from "@/type";
 
 export default function FeaturedFavorites() {
     const [favorites, setFavorites] = useState<TrackType[]>([]);

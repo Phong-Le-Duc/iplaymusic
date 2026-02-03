@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 
-export async function proxy(request) {
+import type { NextRequest } from "next/server";
+export async function proxy(request: NextRequest) {
 
     if (!request.cookies.has("IPM_AT")) {
         return NextResponse.redirect(new URL('/login', request.url))

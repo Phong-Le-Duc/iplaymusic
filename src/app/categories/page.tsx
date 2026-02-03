@@ -1,6 +1,7 @@
 import Category from "@/components/category/Category";
 import CategoryStateContextProvider from "@/components/category/CategoryStateContext";
 import { cookies } from "next/headers";
+import type { CategoryType } from "@/type";
 
 
 
@@ -21,7 +22,7 @@ const coreGenres = [
 ];
 
 // Helper function to fetch subcategories for a category
-async function getSubcategories(categoryName, token) {
+async function getSubcategories(categoryName: string, token: string) {
     const URLFriendlyName = categoryName.replace(/&/g, "%26").replace(/ /g, "%20").replace(/\//g, "%2F");
     const res = await fetch(
         `https://api.spotify.com/v1/search?q=${URLFriendlyName}&type=artist`,
@@ -34,7 +35,7 @@ async function getSubcategories(categoryName, token) {
     const data = await res.json();
     console.log("API response for artists:", data);
 
-    function normalize(str) {
+    function normalize(str: string) {
         return str
             .toLowerCase()
             .replace(/&/g, "and")
@@ -60,15 +61,20 @@ async function getSubcategories(categoryName, token) {
         }
     }
 
-    const filteredArtists = data.artists.items.filter(artist =>
-        artist.genres.some(genre =>
-            synonyms.some(syn => normalize(genre).includes(syn))
+    type Artist = {
+        genres: string[];
+        [key: string]: any;
+    };
+
+    const filteredArtists = data.artists.items.filter((artist: Artist) =>
+        artist.genres.some((genre: string) =>
+            synonyms.some((syn: string) => normalize(genre).includes(syn))
         )
     );
 
     const genreSet = new Set();
-    filteredArtists.forEach(artist => {
-        artist.genres.forEach(genre => genreSet.add(genre));
+    filteredArtists.forEach((artist: Artist) => {
+        artist.genres.forEach((genre: string) => genreSet.add(genre));
     });
     return Array.from(genreSet);
 }
@@ -87,10 +93,11 @@ export default async function CategoriesPage() {
         }
     );
     const data = await res.json();
-    const categories = data.categories.items.filter((cat) => coreGenres.includes(cat.name));
+
+    const categories: CategoryType[] = data.categories.items.filter((cat: CategoryType) => coreGenres.includes(cat.name));
 
     // Fetch subcategories for each category
-    const subcategoriesMap = {};
+    const subcategoriesMap: { [key: string]: any[] } = {};
     for (const cat of categories) {
         subcategoriesMap[cat.id] = await getSubcategories(cat.name, tokenCookie.value);
     }
@@ -103,12 +110,12 @@ export default async function CategoriesPage() {
             <div className="h-[calc(100vh-4rem)] overflow-y-auto pt-4 hide-scrollbar">
                 <CategoryStateContextProvider>
                     <div className="flex flex-col gap-4 pb-30">
-                        {categories.map((cat) => (
+                        {categories.map((cat: CategoryType) => (
                             <Category
                                 id={cat.id}
                                 key={cat.id}
                                 name={cat.name}
-                                icon={cat.icons[0]?.url}
+                                icon={cat.icon}
                                 subcategories={subcategoriesMap[cat.id]}
                             />
                         ))}

@@ -2,8 +2,14 @@
 
 import { useRef, useEffect, useState } from "react";
 import Link from "next/link";
+import type { SubcategoryType } from "@/type";
 
-export default function SubCatGallery({ className = "", subcategories = [] }) {
+interface SubCatGalleryProps {
+    subcategories: SubcategoryType[];
+    className?: string;
+}
+
+const SubCatGallery = ({ subcategories, className }: SubCatGalleryProps) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const [centerIndex, setCenterIndex] = useState(0);
 
@@ -14,7 +20,6 @@ export default function SubCatGallery({ className = "", subcategories = [] }) {
     const clonesStart = subcategories.slice(-CLONE_COUNT);
     const clonesEnd = subcategories.slice(0, CLONE_COUNT);
     const displaySubcats = [...clonesStart, ...subcategories, ...clonesEnd];
-
 
     useEffect(() => {
         const container = containerRef.current;
@@ -74,14 +79,14 @@ export default function SubCatGallery({ className = "", subcategories = [] }) {
             className={`overflow-x-auto flex flex-row snap-x snap-mandatory ${className}`}
             style={{ height: "120px", background: "transparent" }}
         >
-            {displaySubcats.map((subcat: any, i: number) => (
+            {displaySubcats.map((subcat: SubcategoryType, i: number) => (
                 <Link
                     key={subcat.name + '-' + i}
                     href={`/categories/${encodeURIComponent(subcat.name)}`}
                     className="block"
                 >
                     <div
-                        className="snap-center rounded shrink-0 transition-transform transition-opacity duration-300 flex flex-col items-center justify-center"
+                        className="snap-center rounded shrink-0 transition-transform duration-300 flex flex-col items-center justify-center"
                         style={{
                             width: "7rem",
                             height: "7rem",
@@ -104,4 +109,6 @@ export default function SubCatGallery({ className = "", subcategories = [] }) {
             ))}
         </div>
     );
-}
+};
+
+export default SubCatGallery;

@@ -1,6 +1,7 @@
 "use client";
 
 import { useCategoryStateContext } from "./CategoryStateContext";
+import type { CategoryType, SubcategoryType } from "@/type";
 import { IoChevronForwardOutline } from "react-icons/io5";
 import Link from "next/link";
 
@@ -23,8 +24,8 @@ const COLORS = [
     "bg-rose-400",
 ];
 
-export default function Category({ id, name, icon, subcategories = [] }) {
-    const { openIndex, setOpenIndex } = useCategoryStateContext();
+export default function Category({ id, name, icon, subcategories = [] }: CategoryType) {
+    const { openIndex, setOpenIndex } = useCategoryStateContext() as import("../../type").CategoryStateContextType;
 
     const URLFriendlyName = name
         .replace(/&/g, "%26")
@@ -58,7 +59,7 @@ export default function Category({ id, name, icon, subcategories = [] }) {
                                     setOpenIndex(isOpen ? null : id);
                                 }}
                                 className={`p-2 rounded-full transition-colors 
-                                ${isOpen ? "bg-blue-400" : "bg-blue-300"} hover:bg-blue-400`}
+                                    ${isOpen ? "bg-blue-400" : "bg-blue-300"} hover:bg-blue-400`}
                                 style={{
                                     boxShadow: isOpen
                                         ? "inset 0 2px 8px rgba(0,0,0,0.45)"
@@ -77,15 +78,15 @@ export default function Category({ id, name, icon, subcategories = [] }) {
                             className="rounded-b-lg px-4 py-2 overflow-y-auto z-9"
                         >
                             <ul>
-                                {subcategories.map((sub, idx) => (
+                                {subcategories.map((sub: SubcategoryType, idx: number) => (
                                     <li key={idx} className="py-1">
                                         <Link
                                             href={{
-                                                pathname: `/categories/${encodeURIComponent(sub)}`,
+                                                pathname: `/categories/${encodeURIComponent(sub.name)}`,
                                             }}
                                             className="hover:underline text-blue-700"
                                         >
-                                            {sub}
+                                            {sub.name}
                                         </Link>
                                     </li>
                                 ))}
