@@ -1,19 +1,10 @@
-export default function FeaturedPage() {
+import FeaturedFavorites from "@/components/track/FeaturedFavorites";
 
+export default function FeaturedPage() {
     return (
         <>
-            <h1 className="mb-6">Featured</h1>
-
-            <figure className="h-10">
-                <p>featured placeholder</p>
-                {/* <img src="globe.svg" alt="Logo" /> */}
-            </figure>
-
-            <figure className="h-10">
-                <p>featured placeholder</p>
-                {/* <img src="globe.svg" alt="Logo" /> */}
-            </figure>
-
+            {/* <h1 className="mb-6 text-center">Featured</h1> */}
+            <FeaturedFavorites />
         </>
-    )
+    );
 }

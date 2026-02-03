@@ -3,7 +3,7 @@ import FavoriteTrackPlayerClient from "@/components/track/FavoriteTrackPlayerCli
 export default function PlaylistPage() {
     return (
         <div>
-            <h1 className="text-2xl font-bold mb-4">My Favorite Songs</h1>
+            {/* <h1 className="text-2xl font-bold mb-4 text-center">Favorites</h1> */}
             <FavoriteTrackPlayerClient />
         </div>
     );

@@ -96,7 +96,7 @@ export default function FavoriteTrack({ playingId, handlePlayPause }: FavoriteTr
     };
 
     if (favorites.length === 0) {
-        return <p>No favorite songs yet.</p>;
+        return <p className="text-center mt-30">No favorite songs yet.</p>;
     }
 
     return (

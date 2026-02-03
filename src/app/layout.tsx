@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import HeaderDynamic from "@/components/header/HeaderDynamic";
 import FooterWithNav from "@/components/footer/FooterWithNav";
+import { ThemeModeProvider } from "@/components/buttons/ThemeModeContext";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -23,14 +24,16 @@ export const metadata: Metadata = {
   // description er står under sidens navn i søgemaskiner, SEO
 };
 
-export default function RootLayout({ children, }: Readonly<{ children: React.ReactNode; }>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
       <body className={`antialiased bg-gray-900`}>
         <HeaderDynamic />
-        <main className="px-4">
-          {children}
-        </main>
+        <ThemeModeProvider>
+          <main className="px-4">
+            {children}
+          </main>
+        </ThemeModeProvider>
         <FooterWithNav />
       </body>
     </html>

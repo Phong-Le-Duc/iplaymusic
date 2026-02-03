@@ -97,13 +97,10 @@ export default async function CategoriesPage() {
 
     return (
         <>
-            {/* <h1 className="">Categories</h1> */}
-            <div
-                className="min-h-screen w-full bg-cover bg-center"
-            // style={{
-            //     backgroundImage: "url('/background_2.png')"
-            // }}
-            >
+            <header className="sticky top-0 z-10  flex items-center">
+                {/* ...header content... */}
+            </header>
+            <div className="h-[calc(100vh-4rem)] overflow-y-auto pt-4 hide-scrollbar">
                 <CategoryStateContextProvider>
                     <div className="flex flex-col gap-4 pb-30">
                         {categories.map((cat) => (
