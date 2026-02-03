@@ -56,6 +56,7 @@ export default function FavoriteTrack({ playingId, handlePlayPause }: FavoriteTr
                     setFavorites((favs) => {
                         const updated = favs.filter((fav) => fav.id !== track.id);
                         console.log("[FavoriteTrack] setFavorites (removal countdown):", updated);
+                        localStorage.setItem("favoriteTracks", JSON.stringify(updated)); // <-- update localStorage here
                         return updated;
                     });
                 }
